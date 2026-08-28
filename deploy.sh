@@ -3,7 +3,7 @@ set -Eeuo pipefail
 
 REPO_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 COMPOSE_FILE="$REPO_DIR/main/docker-compose.yml"
-SERIAL_DEVICE="${ARDUINO_DEVICE:-/dev/ttyACM0}"
+SERIAL_DEVICE="${ARDUINO_DEVICE:-/dev/ttyUSB0}"
 
 cd "$REPO_DIR"
 
@@ -18,10 +18,10 @@ else
 fi
 
 echo "Rebuilding and starting containers..."
-docker compose -f "$COMPOSE_FILE" up -d --build
+docker-compose -f "$COMPOSE_FILE" up -d --build
 
 echo "Removing unused Docker images..."
 docker image prune -f
 
 echo "Running containers:"
-docker compose -f "$COMPOSE_FILE" ps
+docker-compose -f "$COMPOSE_FILE" ps
