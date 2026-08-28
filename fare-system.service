@@ -1,0 +1,15 @@
+[Unit]
+Description=Public Transport Fare Enforcement
+Requires=docker.service
+After=docker.service network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/camera_project
+ExecStart=/opt/camera_project/deploy.sh
+RemainAfterExit=yes
+TimeoutStartSec=0
+
+[Install]
+WantedBy=multi-user.target
