@@ -1,8 +1,6 @@
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: "${IMAGE_NAME:-ghcr.io/isqqka15/camera_project:main}"
     restart: unless-stopped
     user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
     ports:
@@ -12,7 +10,7 @@ services:
       FINE_AMOUNT: ${FINE_AMOUNT:-50.00}
       FACE_MATCH_THRESHOLD: ${FACE_MATCH_THRESHOLD:-0.6}
       EXIT_DEBOUNCE_SECONDS: ${EXIT_DEBOUNCE_SECONDS:-15}
-      SERIAL_PORT: ${ARDUINO_DEVICE:-/dev/ttyACM0}
+      SERIAL_PORT: ${ARDUINO_DEVICE:-/dev/ttyUSB0}
       SERIAL_BAUD_RATE: ${SERIAL_BAUD_RATE:-115200}
       SERIAL_REQUIRED: ${SERIAL_REQUIRED:-false}
     volumes:

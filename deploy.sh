@@ -17,8 +17,11 @@ else
     echo "Warning: $SERIAL_DEVICE is not present; continuing without the RFID device." >&2
 fi
 
-echo "Rebuilding and starting containers..."
-docker-compose -f "$COMPOSE_FILE" up -d --build
+echo "Pulling the pre-built application image..."
+docker-compose -f "$COMPOSE_FILE" pull
+
+echo "Starting containers..."
+docker-compose -f "$COMPOSE_FILE" up -d --no-build
 
 echo "Removing unused Docker images..."
 docker image prune -f

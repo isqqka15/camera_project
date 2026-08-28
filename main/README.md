@@ -4,14 +4,21 @@ This Dockerized FastAPI service accepts ESP32-CAM face images and Arduino Uno RF
 
 ## Debian 12 deployment
 
-Install Docker Engine and Compose, then grant the deployment user access to the Arduino device:
+Install Docker Engine and Compose, then grant the deployment user access to the Arduino device. The image is built by GitHub Actions and published to GHCR, so the server does not compile dlib:
 
 ```bash
 sudo usermod -aG dialout "$USER"
 # Log out and in again after changing the group.
 cp .env.example .env
-docker compose up --build -d
+docker-compose pull
+docker-compose up -d
 curl http://127.0.0.1:8000/health
+```
+
+If the GHCR package is private, authenticate Docker before pulling it:
+
+```bash
+echo "$GHCR_TOKEN" | docker login ghcr.io -u GITHUB_USERNAME --password-stdin
 ```
 
 ### Automatic startup and deployment
@@ -26,9 +33,9 @@ sudo systemctl enable --now fare-system.service
 sudo systemctl status fare-system.service
 ```
 
-The unit runs `deploy.sh` after Docker starts. The script pulls `origin/main`, sets `/dev/ttyACM0` to mode `666` when present, rebuilds the Compose service, prunes unused images, and prints its status. For a `/dev/ttyUSB0` reader, set `ARDUINO_DEVICE=/dev/ttyUSB0` in the environment used by the service or update the script default.
+The unit runs `deploy.sh` after Docker starts. The script pulls `origin/main`, sets the configured serial device to mode `666` when present, pulls the pre-built Compose image, prunes unused images, and prints its status. Set `IMAGE_NAME` in `.env` to select a different image or tag.
 
-The default Compose mapping is `/dev/ttyACM0`. For `/dev/ttyUSB0`, set `ARDUINO_DEVICE=/dev/ttyUSB0` in `.env`. If no reader is connected, the service continues when `SERIAL_REQUIRED=false`.
+The default Compose mapping is `/dev/ttyUSB0`. Set `ARDUINO_DEVICE` in `.env` when the reader uses a different device. If no reader is connected, the service continues when `SERIAL_REQUIRED=false`.
 
 ## API
 
