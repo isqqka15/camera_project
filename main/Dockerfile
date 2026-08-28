@@ -15,6 +15,7 @@ ENV DLIB_NO_GUI_SUPPORT=1
 ENV DLIB_GIF_SUPPORT=0
 ENV DLIB_JPEG_SUPPORT=1
 ENV DLIB_PNG_SUPPORT=1
+ENV USE_AVX_INSTRUCTIONS=0
 RUN CMAKE_BUILD_PARALLEL_LEVEL=2 pip install --no-cache-dir dlib
 RUN /opt/venv/bin/pip install --no-cache-dir --upgrade pip \
     && /opt/venv/bin/pip install --no-cache-dir -r /workspace/requirements.txt
