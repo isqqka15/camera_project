@@ -19,7 +19,7 @@ ENV CFLAGS="-mno-avx -mno-avx2 -mno-fma -mno-sse4.1 -mno-sse4.2"
 ENV CXXFLAGS="-mno-avx -mno-avx2 -mno-fma -mno-sse4.1 -mno-sse4.2"
 ENV CMAKE_ARGS="-DDLIB_GIF_SUPPORT=OFF -DDLIB_JPEG_SUPPORT=ON -DDLIB_USE_CUDA=OFF -DUSE_AVX_INSTRUCTIONS=OFF"
 ENV USE_AVX_INSTRUCTIONS=0
-RUN CMAKE_BUILD_PARALLEL_LEVEL=2 pip install --no-cache-dir dlib
+RUN CMAKE_BUILD_PARALLEL_LEVEL=2 pip install --no-cache-dir --no-binary dlib dlib
 RUN /opt/venv/bin/pip install --no-cache-dir --upgrade pip \
     && /opt/venv/bin/pip install --no-cache-dir -r /workspace/requirements.txt
 
