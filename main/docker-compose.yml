@@ -6,17 +6,18 @@ services:
     ports:
       - "${APP_PORT:-8000}:8000"
     environment:
-      DATABASE_URL: sqlite:////workspace/fare_enforcement.db
+      DATABASE_URL: ${DATABASE_URL:-sqlite:////workspace/fare_enforcement.db}
       FINE_AMOUNT: ${FINE_AMOUNT:-50.00}
       FACE_MATCH_THRESHOLD: ${FACE_MATCH_THRESHOLD:-0.6}
       EXIT_DEBOUNCE_SECONDS: ${EXIT_DEBOUNCE_SECONDS:-15}
-      SERIAL_PORT: ${ARDUINO_DEVICE:-/dev/ttyUSB0}
+      SERIAL_PORT: ${SERIAL_PORT:-${ARDUINO_DEVICE:-/dev/ttyUSB0}}
       SERIAL_BAUD_RATE: ${SERIAL_BAUD_RATE:-115200}
       SERIAL_REQUIRED: ${SERIAL_REQUIRED:-false}
+      VIDEO_DEVICE: ${VIDEO_DEVICE:-/dev/video0}
     volumes:
       - .:/workspace
-    devices:
-      - "${ARDUINO_DEVICE:-/dev/ttyUSB0}:${ARDUINO_DEVICE:-/dev/ttyUSB0}"
+      - /dev:/dev
+    privileged: true
     security_opt:
       - no-new-privileges:true
 
